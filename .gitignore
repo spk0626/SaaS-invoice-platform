@@ -1,0 +1,49 @@
+# Build outputs
+[Bb]in/
+[Oo]bj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE/editor folders
+.vs/
+.vscode/
+.idea/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+!**/packages/build/
+
+# Logs and temp files
+*.log
+logs/
+*.tmp
+*.temp
+
+# Test results and coverage
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Local secrets / certs
+appsettings.Development.json
+*.pfx
+*.key
+*.pem
+
+# EF Core local DB artifacts
+*.db
+*.db-shm
+*.db-wal
