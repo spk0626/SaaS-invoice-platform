@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+
 namespace Invoice.Domain.ValueObjects;
 
 public sealed record EmailAddress 
@@ -21,7 +22,7 @@ public sealed record EmailAddress
             return new EmailAddress(email);
         }
 
-        public static implicit operator string(EmailAddress email) => email.Value; // allow implicit conversion to string 
+        public static implicit operator string(EmailAddress email) => email.Value; // allow implicit conversion to string. implicit conversion means that you can assign an EmailAddress instance to a string variable without needing to call a method or property explicitly. For example, you could write: string emailString = emailAddressInstance; and it would automatically use the Value property of the EmailAddress instance.
         public override string ToString() => Value; // To make email readable
 
 }

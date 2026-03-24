@@ -32,6 +32,7 @@ TestResults/
 coverage/
 *.coverage
 *.coveragexml
+*.cobertura.xml
 
 # OS files
 Thumbs.db
@@ -39,6 +40,8 @@ Desktop.ini
 
 # Local secrets / certs
 appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
 *.pfx
 *.key
 *.pem
@@ -47,3 +50,7 @@ appsettings.Development.json
 *.db
 *.db-shm
 *.db-wal
+*.sqlite
+
+# Docker volumes (local)
+postgres_data/
