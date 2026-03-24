@@ -14,7 +14,7 @@ public sealed record GetInvoicesQuery(
 ): IRequest<PagedResult<InvoiceDto>>;
 
 public sealed class GetInvoicesQueryHandler
-: IRequestHandler<GetIncoicesQuery, PagedResult<InvoiceDto>>
+: IRequestHandler<GetInvoicesQuery, PagedResult<InvoiceDto>>
 {
     private readonly IInvoiceRepository _invoices;
     private readonly IMapper _mapper;
@@ -40,7 +40,7 @@ public sealed class GetInvoicesQueryHandler
             
             var dtos = _mapper.Map<IEnumerable<InvoiceDto>>(items);
 
-            return PagedResult<InvoiceDto>>.Create(
+            return PagedResult<InvoiceDto>.Create(
                 dtos, request.Page, request.PageSize, totalCount);
 
         }
