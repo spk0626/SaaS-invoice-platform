@@ -30,6 +30,7 @@ logs/
 # Test results and coverage
 TestResults/
 coverage/
+coverage-report/
 *.coverage
 *.coveragexml
 *.cobertura.xml
@@ -42,6 +43,7 @@ Desktop.ini
 appsettings.Development.json
 appsettings.Production.json
 appsettings.Staging.json
+appsettings.json
 *.pfx
 *.key
 *.pem

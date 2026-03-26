@@ -25,8 +25,8 @@ public sealed class GetInvoiceByIdQueryHandler
             GetInvoiceByIdQuery request,
             CancellationToken cancellationToken)
             {
-                var invoice = await _invoices.GetByIdAsync(request.Id, cancellationToken)
-                ?? throw NotFoundException("Invoice", request.Id);
+                var invoice = await _invoices.GetByIdAsync(request.InvoiceId, cancellationToken)
+                ?? throw new NotFoundException("Invoice", request.InvoiceId);
 
                 return _mapper.Map<InvoiceDto>(invoice);
             }

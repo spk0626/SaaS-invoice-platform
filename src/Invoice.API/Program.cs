@@ -12,6 +12,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -64,7 +65,7 @@ builder.Services.AddTransient(
     typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
 builder.Services.AddValidatorsFromAssembly(typeof(AssemblyMarker).Assembly);
-builder.Services.AddAutoMapper(typeof(AssemblyMarker).Assembly);
+builder.Services.AddAutoMapper(_ => { }, typeof(AssemblyMarker).Assembly);
 
 // ── Current user service ──────────────────────────────────────────────────────
 builder.Services.AddHttpContextAccessor();

@@ -1,4 +1,5 @@
 using Invoice.Application.Common.Interfaces;
+using Invoice.Application.Common.Messaging;
 using Invoice.Domain.Common;
 using Invoice.Domain.Entities;
 using MediatR;
@@ -79,21 +80,29 @@ public class AppDbContext : IdentityDbContext
     }
 
     private async Task DispatchDomainEventsAsync(CancellationToken ct)
+{
+    var aggregates = ChangeTracker
+        .Entries<IHasDomainEvents>()
+        .Where(e => e.Entity.DomainEvents.Any())
+        .Select(e => e.Entity)
+        .ToList();
+
+    var domainEvents = aggregates
+        .SelectMany(a => a.DomainEvents)
+        .ToList();
+
+    aggregates.ForEach(a => a.ClearDomainEvents());
+
+    foreach (var domainEvent in domainEvents)
     {
-        var aggregates = ChangeTracker
-            .Entries<IHasDomainEvents>()
-            .Where(e => e.Entity.DomainEvents.Any())
-            .Select(e => e.Entity)
-            .ToList();
+        // Wrapping each domain event in a MediatR notification
+        var notificationType = typeof(DomainEventNotification<>)
+            .MakeGenericType(domainEvent.GetType());
 
-        var events = aggregates
-            .SelectMany(a => a.DomainEvents)
-            .ToList();
+        var notification = Activator.CreateInstance(notificationType, domainEvent)!;
 
-        aggregates.ForEach(a => a.ClearDomainEvents());
-
-        foreach (var domainEvent in events)
-            await _mediator.Publish(domainEvent, ct);
+        await _mediator.Publish(notification, ct);
     }
+}
 
 }
