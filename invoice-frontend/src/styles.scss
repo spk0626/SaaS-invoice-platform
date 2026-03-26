@@ -1,0 +1,288 @@
+// src/styles.scss
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
+  ),
+  typography: (
+    brand-family: 'Inter, Roboto, sans-serif',
+    plain-family: 'Inter, Roboto, sans-serif',
+  ),
+  density: (scale: 0)
+));
+
+html {
+  @include mat.all-component-themes($theme);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', Roboto, sans-serif;
+  background: #f8f9fa;
+  color: #1a1a1a;
+}
+
+// ── Shell layout ─────────────────────────────────────────────────────────────
+.shell-container { height: 100vh; }
+
+.shell-sidenav {
+  width: 230px;
+  border-right: 1px solid #e0e0e0;
+  background: #fff;
+}
+
+.sidenav-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 20px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 8px;
+}
+
+.brand-icon { color: #3f51b5; font-size: 24px; }
+.brand-name { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+
+.active-nav-item {
+  background: rgba(63, 81, 181, 0.08) !important;
+  color: #3f51b5 !important;
+  border-radius: 0 24px 24px 0 !important;
+  mat-icon { color: #3f51b5; }
+}
+
+.shell-toolbar {
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: none;
+  color: #1a1a1a;
+}
+
+.shell-content { display: flex; flex-direction: column; }
+.toolbar-spacer { flex: 1; }
+.user-email { font-size: 13px; color: #555; margin-right: 4px; }
+
+.page-content {
+  flex: 1;
+  padding: 28px 32px;
+  overflow: auto;
+}
+
+// ── Page header ───────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.page-subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+// ── Cards ─────────────────────────────────────────────────────────────────────
+mat-card {
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+}
+
+// ── Tables ────────────────────────────────────────────────────────────────────
+.table-container {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.mat-mdc-row:hover { background: #fafafa; }
+
+.invoice-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #3f51b5;
+}
+
+.customer-name { font-weight: 500; }
+
+// ── Filter bar ────────────────────────────────────────────────────────────────
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.status-filter { width: 180px; }
+.search-field  { width: 300px; }
+
+// ── Loading ───────────────────────────────────────────────────────────────────
+.loading-center {
+  display: flex;
+  justify-content: center;
+  padding: 64px;
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 32px;
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 8px;
+  color: #555;
+}
+
+.empty-subtitle {
+  font-size: 14px;
+  margin: 0;
+}
+
+// ── Login ─────────────────────────────────────────────────────────────────────
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f2f5;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 8px 8px 16px;
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.login-brand-icon { color: #3f51b5; font-size: 28px; }
+.login-brand-name { font-size: 18px; font-weight: 600; }
+.login-form { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
+.login-btn  { height: 44px; margin-top: 8px; }
+
+.login-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #c62828;
+  font-size: 13px;
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 4px;
+}
+
+.stat-icon { font-size: 36px; width: 36px; height: 36px; }
+.stat-value { font-size: 28px; font-weight: 600; line-height: 1; }
+.stat-label { font-size: 13px; color: #666; margin-top: 4px; }
+
+.dashboard-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+// ── Create invoice form ───────────────────────────────────────────────────────
+.create-form { display: flex; flex-direction: column; gap: 16px; }
+
+.create-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+}
+
+.card-fields { display: flex; flex-direction: column; gap: 4px; padding-top: 16px; }
+.two-col     { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.items-card  { max-width: 900px; }
+
+.item-row {
+  display: grid;
+  grid-template-columns: 3fr 100px 140px 44px;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 4px;
+}
+
+.remove-btn { margin-top: 8px; }
+
+.summary-rows { display: flex; flex-direction: column; gap: 12px; padding-top: 8px; }
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.summary-label { color: #666; }
+
+.summary-total {
+  font-size: 16px;
+  font-weight: 600;
+  padding-top: 4px;
+}
+
+.summary-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
+.full-width { width: 100%; }
+
+.btn-spinner {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+// ── Snackbars ─────────────────────────────────────────────────────────────────
+.snack-success .mdc-snackbar__surface { background: #2e7d32 !important; }
+.snack-error   .mdc-snackbar__surface { background: #c62828 !important; }

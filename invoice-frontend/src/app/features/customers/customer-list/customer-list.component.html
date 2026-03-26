@@ -1,0 +1,88 @@
+<app-page-header
+  title="Customers"
+  subtitle="All registered customers" />
+
+<div class="filter-bar">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search customers</mat-label>
+    <input
+      matInput
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="search()"
+      placeholder="Name or email">
+    <button
+      *ngIf="searchTerm"
+      mat-icon-button
+      matSuffix
+      (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-icon matSuffix *ngIf="!searchTerm">search</mat-icon>
+  </mat-form-field>
+
+  <button mat-stroked-button (click)="search()">Search</button>
+</div>
+
+<div *ngIf="loading()" class="loading-center">
+  <mat-spinner diameter="40" />
+</div>
+
+<ng-container *ngIf="!loading() && result() as data">
+
+  <app-empty-state
+    *ngIf="data.items.length === 0"
+    title="No customers found"
+    subtitle="Try adjusting your search"
+    icon="people" />
+
+  <div *ngIf="data.items.length > 0" class="table-container">
+    <mat-table [dataSource]="data.items">
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span class="customer-name">{{ row.name }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.email }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <mat-header-cell *matHeaderCellDef>Phone</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.phone ?? '—' }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-chip-set>
+            <mat-chip
+              [color]="row.isActive ? 'primary' : undefined"
+              [highlighted]="row.isActive">
+              {{ row.isActive ? 'Active' : 'Inactive' }}
+            </mat-chip>
+          </mat-chip-set>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <mat-header-cell *matHeaderCellDef>Customer since</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          {{ row.createdAt | date:'dd MMM y' }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns" />
+      <mat-row *matRowDef="let row; columns: displayedColumns;" />
+    </mat-table>
+
+    <mat-paginator
+      [length]="data.totalCount"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPage($event)" />
+  </div>
+</ng-container>

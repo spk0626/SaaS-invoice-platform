@@ -1,0 +1,43 @@
+<app-page-header
+  title="Dashboard"
+  subtitle="Overview of your billing activity"
+  actionLabel="New invoice"
+  actionRoute="/invoices/create"
+  actionIcon="add" />
+
+<div *ngIf="loading()" class="loading-center">
+  <mat-spinner diameter="40" />
+</div>
+
+<ng-container *ngIf="!loading()">
+  <div class="stats-grid">
+    <mat-card *ngFor="let card of statCards()" class="stat-card">
+      <mat-card-content>
+        <div class="stat-inner">
+          <mat-icon [style.color]="card.color" class="stat-icon">
+            {{ card.icon }}
+          </mat-icon>
+          <div>
+            <div class="stat-value">{{ card.value }}</div>
+            <div class="stat-label">{{ card.label }}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="dashboard-actions">
+    <button mat-stroked-button routerLink="/invoices">
+      <mat-icon>receipt_long</mat-icon>
+      View all invoices
+    </button>
+    <button mat-stroked-button routerLink="/customers">
+      <mat-icon>people</mat-icon>
+      View all customers
+    </button>
+    <button mat-stroked-button routerLink="/invoices/create">
+      <mat-icon>add</mat-icon>
+      Create invoice
+    </button>
+  </div>
+</ng-container>

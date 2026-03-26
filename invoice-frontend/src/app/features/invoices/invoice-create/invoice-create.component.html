@@ -1,0 +1,172 @@
+<app-page-header
+  title="Create invoice"
+  subtitle="Fill in the details below" />
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="create-form">
+
+  <div class="create-grid">
+
+    <!-- Left column: invoice details -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Invoice details</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="card-fields">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Customer</mat-label>
+          <mat-select formControlName="customerId">
+            <mat-option *ngFor="let c of customers()" [value]="c.id">
+              {{ c.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Customer is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Due date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="dueDate"
+            [min]="minDate">
+          <mat-datepicker-toggle matSuffix [for]="picker" />
+          <mat-datepicker #picker />
+          <mat-error>A future due date is required</mat-error>
+        </mat-form-field>
+
+        <div class="two-col">
+          <mat-form-field appearance="outline">
+            <mat-label>Currency</mat-label>
+            <mat-select formControlName="currency">
+              <mat-option *ngFor="let c of currencies" [value]="c">
+                {{ c }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tax rate</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="taxRate"
+              min="0"
+              max="1"
+              step="0.01">
+            <mat-hint>0.1 = 10%</mat-hint>
+            <mat-error>Must be between 0 and 1</mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notes (optional)</mat-label>
+          <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
+
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Right column: summary and submit -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Summary</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span class="summary-label">Subtotal</span>
+            <span>{{ subtotal | currency:selectedCurrency }}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">
+              Tax ({{ (form.get('taxRate')?.value ?? 0) * 100 | number:'1.0-1' }}%)
+            </span>
+            <span>{{ taxAmount | currency:selectedCurrency }}</span>
+          </div>
+          <mat-divider />
+          <div class="summary-row summary-total">
+            <span>Total</span>
+            <span>{{ total | currency:selectedCurrency }}</span>
+          </div>
+        </div>
+
+        <div class="summary-actions">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="full-width"
+            [disabled]="submitting()">
+            <mat-spinner
+              *ngIf="submitting()"
+              diameter="18"
+              class="btn-spinner" />
+            {{ submitting() ? 'Creating...' : 'Create invoice' }}
+          </button>
+          <button
+            mat-stroked-button
+            type="button"
+            class="full-width"
+            routerLink="/invoices">
+            Cancel
+          </button>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Line items -->
+  <mat-card class="items-card">
+    <mat-card-header>
+      <mat-card-title>Line items</mat-card-title>
+    </mat-card-header>
+    <mat-card-content formArrayName="items">
+
+      <div
+        *ngFor="let item of itemsArray.controls; let i = index"
+        [formGroupName]="i"
+        class="item-row">
+
+        <mat-form-field appearance="outline" class="item-desc">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description">
+          <mat-error>Description is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="item-qty">
+          <mat-label>Qty</mat-label>
+          <input matInput type="number" formControlName="quantity" min="0.01">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="item-price">
+          <mat-label>Unit price</mat-label>
+          <input matInput type="number" formControlName="unitPrice" min="0.01">
+          <mat-hint>= {{ lineTotal(i) | currency:selectedCurrency }}</mat-hint>
+        </mat-form-field>
+
+        <button
+          mat-icon-button
+          type="button"
+          color="warn"
+          class="remove-btn"
+          [disabled]="itemsArray.length === 1"
+          [matTooltip]="itemsArray.length === 1 ? 'At least one item required' : 'Remove item'"
+          (click)="removeItem(i)">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+
+      <button
+        mat-stroked-button
+        type="button"
+        (click)="addItem()">
+        <mat-icon>add</mat-icon>
+        Add line item
+      </button>
+
+    </mat-card-content>
+  </mat-card>
+</form>
